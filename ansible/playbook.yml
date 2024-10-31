@@ -1,0 +1,24 @@
+- name: ping server
+  hosts: server1
+  become: false
+  tasks:
+    - name: ping server1
+      ping:
+
+- name: install app from git
+  hosts: server1
+  become: true
+  gather_facts: false
+  tasks:
+    - name: clone repository
+      raw: git clone https://github.com/ArtemGonch/SBT-is-ansible.git && cd SBT-is-ansible && git checkout dev
+    - name: copy app
+      raw: mkdir -p /app && cp -r /SBT-is-ansible/app/* /app
+
+- name: server1 running
+  hosts: server1
+  become: true
+  gather_facts: false
+  tasks:
+    - name: run
+      raw: python3 /app/__main__.py
