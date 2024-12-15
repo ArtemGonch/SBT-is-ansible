@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+
+  server1:
+    build:
+      context: ./app
+    networks:
+      local_network:
+        ipv4_address: 172.20.0.4
+
+  ansible:
+    build:
+      context: ./ansible
+    command: ansible-playbook playbook.yml
+    networks:
+      local_network:
+        ipv4_address: 172.20.0.3
+
+networks:
+  local_network:
+    driver: bridge
+    name: local_network
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
